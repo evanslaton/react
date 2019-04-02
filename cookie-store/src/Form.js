@@ -5,60 +5,48 @@ class Form extends Component {
     super(props);
     this.initialState = {
       name: '',
-      minimumCustomers: null,
-      maximumCustomers: null,
-      averageCookiesPerCustomer: null
+      minimumCustomers: '',
+      maximumCustomers: '',
+      averageCookiesPerCustomer: ''
     }
     this.state = this.initialState;
-
-    this.updateName = this.updateName.bind(this);
-    this.updateMinimumCustomers = this.updateMinimumCustomers.bind(this);
-    this.updateMaximumCustomers = this.updateMaximumCustomers.bind(this);
-    this.updateAverageCookiesPerCustomer = this.updateAverageCookiesPerCustomer.bind(this);
   }
 
-  updateName(event) {
+  handleChange = (event) => {
+    const { name, value } = event.target
+  
     this.setState({
-      name: event.target.value.toLowerCase()
-    }
-    , () => console.log("Store Name", this.state.name))
+      [name]: value,
+    })
   }
 
-  updateMinimumCustomers(event) {
-    this.setState({
-      minimumCustomers: event.target.value
-    }
-    , () => console.log("Min Customers", this.state.minimumCustomers))
-  }
-
-  updateMaximumCustomers(event) {
-    this.setState({
-      maximumCustomers: event.target.value
-    }
-    , () => console.log("Max Customers", this.state.maximumCustomers))
-  }
-
-  updateAverageCookiesPerCustomer(event) {
-    this.setState({
-      averageCookiesPerCustomer: event.target.value
-    }
-    , () => console.log("Cookies Per Customer", this.state.averageCookiesPerCustomer))
+  submitForm = () => {
+    this.props.updateStores(this.state);
+    this.setState(this.initialState);                     
   }
 
   render() {
+    const { name, minimumCustomers, maximumCustomers, averageCookiesPerCustomer } = this.state;
+
     return (
       <form>
         <label>Store Name
-          <input type="text" name="name" onChange={this.updateName} />
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={this.handleChange}
+          />
         </label>
 
         <label>Minimum Customers
           <input
             type="number"
             name="minimumCustomers"
+            value={minimumCustomers}
             step="0.1"
             min="0"
-            onChange={this.updateMinimumCustomers}
+            onChange={this.handleChange}
           />
         </label>
 
@@ -66,9 +54,10 @@ class Form extends Component {
           <input
             type="number"
             name="maximumCustomers"
+            value={maximumCustomers}
             step="0.1"
             min="0"
-            onChange={this.updateMaximumCustomers}  
+            onChange={this.handleChange}  
           />
         </label>
 
@@ -76,25 +65,17 @@ class Form extends Component {
           <input
             type="number"
             name="averageCookiesPerCustomer"
+            value={averageCookiesPerCustomer}
             step="0.1"
             min="0"
-            onChange={this.updateAverageCookiesPerCustomer}
+            onChange={this.handleChange}
           />
         </label>
 
-        <button type="button" onClick={this.handleClick}>Submit</button>
+        <input type="button" value="Submit" onClick={this.submitForm} />
       </form>
     )
   }
 }
 
 export default Form;
-
-function Store(name, minimumCustomers, maximumCustomers, averageCookiesPerCustomer) {
-  this.name = name.toLowerCase();
-  this.minimumCustomers = minimumCustomers;
-  this.maximumCustomers = maximumCustomers;
-  this.averageCookiesPerCustomer = averageCookiesPerCustomer;
-  this.cookiesPerHour = [];
-  this.employeesPerHour = [];
-}
