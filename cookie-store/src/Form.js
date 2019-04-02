@@ -3,29 +3,86 @@ import React, { Component } from 'react';
 class Form extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      store: {}
+    this.initialState = {
+      name: '',
+      minimumCustomers: null,
+      maximumCustomers: null,
+      averageCookiesPerCustomer: null
     }
+    this.state = this.initialState;
+
+    this.updateName = this.updateName.bind(this);
+    this.updateMinimumCustomers = this.updateMinimumCustomers.bind(this);
+    this.updateMaximumCustomers = this.updateMaximumCustomers.bind(this);
+    this.updateAverageCookiesPerCustomer = this.updateAverageCookiesPerCustomer.bind(this);
   }
 
-  createNewStore
+  updateName(event) {
+    this.setState({
+      name: event.target.value.toLowerCase()
+    }
+    , () => console.log("Store Name", this.state.name))
+  }
+
+  updateMinimumCustomers(event) {
+    this.setState({
+      minimumCustomers: event.target.value
+    }
+    , () => console.log("Min Customers", this.state.minimumCustomers))
+  }
+
+  updateMaximumCustomers(event) {
+    this.setState({
+      maximumCustomers: event.target.value
+    }
+    , () => console.log("Max Customers", this.state.maximumCustomers))
+  }
+
+  updateAverageCookiesPerCustomer(event) {
+    this.setState({
+      averageCookiesPerCustomer: event.target.value
+    }
+    , () => console.log("Cookies Per Customer", this.state.averageCookiesPerCustomer))
+  }
 
   render() {
     return (
       <form>
-        <label for="name">Store Name</label>
-        <input type="text" name="name" />
-  
-        <label for="minimumCustomers">Minimum Customers</label>
-        <input type="number" name="minimumCustomers" />
-  
-        <label for="maximumCustomers">Maximum Customers</label>
-        <input type="number" name="maximumCustomers" />
-  
-        <label for="averageCookiesPerCustomer">Average Cookies Per Customer</label>
-        <input type="number" name="averageCookiesPerCustomer" />
+        <label>Store Name
+          <input type="text" name="name" onChange={this.updateName} />
+        </label>
 
-        <button type="submit">Submit</button>
+        <label>Minimum Customers
+          <input
+            type="number"
+            name="minimumCustomers"
+            step="0.1"
+            min="0"
+            onChange={this.updateMinimumCustomers}
+          />
+        </label>
+
+        <label>Maximum Customers
+          <input
+            type="number"
+            name="maximumCustomers"
+            step="0.1"
+            min="0"
+            onChange={this.updateMaximumCustomers}  
+          />
+        </label>
+
+        <label>Average Cookies Per Customer
+          <input
+            type="number"
+            name="averageCookiesPerCustomer"
+            step="0.1"
+            min="0"
+            onChange={this.updateAverageCookiesPerCustomer}
+          />
+        </label>
+
+        <button type="button" onClick={this.handleClick}>Submit</button>
       </form>
     )
   }

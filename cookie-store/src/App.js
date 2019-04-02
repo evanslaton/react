@@ -9,32 +9,48 @@ class App extends Component {
       stores: []
     }
 
+    this.updateStores = this.updateStores.bind(this);
+    this.getStoreIndex = this.getStoreIndex.bind(this);
     this.addStore = this.addStore.bind(this);
-    this.updateStore = this.updateStore.bind(this);
+    this.changeStore = this.changeStore.bind(this);
   }
 
-  addStore(store) {
+  updateStores(store) {
+    const storeIndex = this.getStoreIndex(store.name)
+    if (storeIndex === -1) {
+      this.addStore(store);
+    } else {
+      this.changeStores(store, storeIndex);
+    }
+  }
+
+  getStoreIndex(storeName) {
+    for (let i = 0; i < this.state.stores.length; i++) {
+      if (storeName === this.state.stores[i].name) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  addStore(storeToAdd) {
     this.setState({
-      stores: this.state.stores.concat(store)
+      stores: this.state.stores.concat(storeToAdd)
     })
   }
 
-  updateStore(newStore) {
+  changeStore(store, index) {
+    const updatedStores = [...this.state.stores];
+    updatedStores[index] = store
     this.setState({
-      stores: this.state.stores.map((store) => {
-        if (newStore.name === store.name) {
-          return newStore;
-        } else {
-          return store;
-        }
-      })
+      stores: updatedStores
     })
   }
 
   render() {
     return (
       <div>
-        <Form addStore={this.addStore} updateStore={this.updateStore} />
+        <Form updateStores={this.updateStores} />
       </div>
     );
   }
