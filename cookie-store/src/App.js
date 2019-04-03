@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import Form from './Form'
+import Table from './Table'
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stores: []
+      stores: [],
+      allStoreCookiesPerHourTotals: [],
+      allStoreDailyTotal: ''
     }
 
     this.updateStores = this.updateStores.bind(this);
     this.getStoreIndex = this.getStoreIndex.bind(this);
     this.addStore = this.addStore.bind(this);
     this.changeStores = this.changeStores.bind(this);
+    this.calculateAllStoreCookiesPerHourTotals = this.calculateAllStoreCookiesPerHourTotals.bind(this);
   }
 
   updateStores(storeInfo) {
@@ -44,7 +48,11 @@ class App extends Component {
   addStore(storeToAdd) {
     this.setState({
       stores: this.state.stores.concat(storeToAdd)
-    }, () => console.log("Add Stores", this.state.stores))
+    }, () => this.setState({
+      allStoreCookiesPerHourTotals: this.calculateAllStoreCookiesPerHourTotals()
+    }, () => this.setState({
+      allStoreDailyTotal: this.calculateAllStoreDailyTotal()
+    })))
   }
 
   changeStores(store, index) {
@@ -52,13 +60,42 @@ class App extends Component {
     updatedStores[index] = store
     this.setState({
       stores: updatedStores
-    }, () => console.log("Change Stores", this.state.stores))
+    }, () => this.setState({
+      allStoreCookiesPerHourTotals: this.calculateAllStoreCookiesPerHourTotals()
+    }, () => this.setState({
+      allStoreDailyTotal: this.calculateAllStoreDailyTotal()
+    })))
+  }
+
+  calculateAllStoreCookiesPerHourTotals() {
+    const allStoreCookiesPerHourTotals = [];
+    let total;
+
+    for (let i = 0; i < Store.hoursOfOperation.length; i++) {
+      total = 0;
+      for (let j = 0; j < this.state.stores.length; j++) {
+        total += parseInt(this.state.stores[j].cookiesPerHour[i]);    
+      }
+      allStoreCookiesPerHourTotals.push(total);
+    }
+
+    return allStoreCookiesPerHourTotals;
+  }
+
+  calculateAllStoreDailyTotal() {
+    return this.state.allStoreCookiesPerHourTotals.reduce((cookies, totalCookies) => cookies + totalCookies);
   }
 
   render() {
     return (
       <div>
         <Form updateStores={this.updateStores} />
+        <Table
+          stores={this.state.stores}
+          hoursOfOperation={Store.hoursOfOperation}
+          allStoreCookiesPerHourTotals={this.state.allStoreCookiesPerHourTotals}
+          allStoreDailyTotal={this.state.allStoreDailyTotal}
+        />
       </div>
     );
   }
@@ -76,7 +113,7 @@ function Store(name, minimumCustomers, maximumCustomers, averageCookiesPerCustom
   this.employeesPerHour = [];
 }
 
-Store.hoursOfOperation = ['6am', '7am', '8am', '9am', '10am'];
+Store.hoursOfOperation = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
 Store.allStoreCookiesPerHourTotals = [];
 Store.AllStoresEmployeesPerHourTotals = [];
 
@@ -93,10 +130,9 @@ Store.prototype.getDailyCookieTotal = function() {
 }
 
 Store.prototype.calculateEmployeesPerHour = function() {
-// TODO
+  // TODO
 }
 
 Store.prototype.getRandomNumber = function() {
   return Math.random() * (this.maximumCustomers - this.minimumCustomers) + this.minimumCustomers;
 }
-
