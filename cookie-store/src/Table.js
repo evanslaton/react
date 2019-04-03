@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Table = (props) => {
   return (
@@ -47,7 +47,7 @@ const TableFooter = (props) => {
   return (
     <tfoot>
       <tr>
-        <td></td>
+        <td>Hourly Total</td>
         {props.allStoreCookiesPerHourTotals.map((total, key) =>
           <td key={key}>{total}</td>
         )}
