@@ -91,6 +91,15 @@ class App extends Component {
       <div>
         <Form updateStores={this.updateStores} />
         <Table
+          dataToRender={'cookies'}
+          stores={this.state.stores}
+          hoursOfOperation={Store.hoursOfOperation}
+          allStoreCookiesPerHourTotals={this.state.allStoreCookiesPerHourTotals}
+          allStoreDailyTotal={this.state.allStoreDailyTotal}
+        />
+
+        <Table
+          dataToRender={'employees'}
           stores={this.state.stores}
           hoursOfOperation={Store.hoursOfOperation}
           allStoreCookiesPerHourTotals={this.state.allStoreCookiesPerHourTotals}
@@ -110,7 +119,7 @@ function Store(name, minimumCustomers, maximumCustomers, averageCookiesPerCustom
   this.averageCookiesPerCustomer = parseFloat(averageCookiesPerCustomer);
   this.cookiesPerHour = this.calculateCookiesPerHour();
   this.dailyCookieTotal = this.getDailyCookieTotal();
-  this.employeesPerHour = [];
+  this.employeesPerHour = this.calculateEmployeesPerHour();
 }
 
 Store.hoursOfOperation = ['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm'];
@@ -130,7 +139,13 @@ Store.prototype.getDailyCookieTotal = function() {
 }
 
 Store.prototype.calculateEmployeesPerHour = function() {
-  // TODO
+  const CUSTOMERS_SERVED_PER_HOUR = 20;
+  const MINIMUM_EMPLOYEES = 2;
+  let employeesNeeded = 0;
+  return this.cookiesPerHour.map((cookies) => {
+    employeesNeeded = Math.ceil((cookies / this.averageCookiesPerCustomer) / CUSTOMERS_SERVED_PER_HOUR);
+    return employeesNeeded < 2 ? MINIMUM_EMPLOYEES : employeesNeeded;
+  });
 }
 
 Store.prototype.getRandomNumber = function() {

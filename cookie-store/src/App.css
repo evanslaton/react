@@ -1,1 +1,63 @@
+body {
+  font-size: .8em;
+}
 
+form {
+  width: 300px;
+  background-color: lightgrey;
+  padding: 1em 1.5em;
+  border-radius: .5em;
+  float: left;
+  margin: 3em;
+}
+
+form label {
+  padding-top: 1em;
+}
+
+form input {
+  display: block;
+  width: 100%;
+  margin-bottom: 1em;
+  margin-top: .25em;
+  padding-left: .5em;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: .5em;
+  height: 2.5em;
+  border: 1px solid black;
+}
+
+form input[type=button] {
+  height: 2.5em;
+  margin-top: 1.5em;
+  background-color: black;
+  color: white;
+}
+
+form input[type=button]:hover {
+  box-shadow: 2px 2px 5px grey;
+}
+
+form input[type=button]:active {
+  box-shadow: none;
+}
+
+table {
+  border-collapse: collapse;
+  max-width: 95%;
+  float: left;
+  margin-top: 3em;
+}
+
+table th, tbody th {
+  background-color: black;
+  color: white;
+}
+
+
+table th, table td {
+  padding: .25em .5em;
+  text-align: center;
+  border: 1px solid black;
+}
