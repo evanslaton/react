@@ -21,8 +21,13 @@ class Form extends Component {
   }
 
   submitForm = () => {
-    this.props.updateStores(this.state);
-    this.setState(this.initialState);                     
+    if (this.state.name !== ''
+      && this.state.minimumCustomers !== ''
+      && this.state.maximumCustomers !== ''
+      && this.state.averageCookiesPerCustomer !== '') {
+        this.props.updateStores(this.state);
+        this.setState(this.initialState);
+    }
   }
 
   render() {
